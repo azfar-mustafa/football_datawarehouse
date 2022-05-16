@@ -30,7 +30,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     def create_container():
         container_name = 'staging'
-        container = ContainerClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=azfarstorageaccountblob;AccountKey=3VrwTc4jGBKCtYg956IOxvhVdmtkUxajvCiIs9H3aC2tjsz9odQVXxMkZVP0qReEiRx2ts8SVvNt+AStGsF4Zg==;EndpointSuffix=core.windows.net", container_name)
+        container = ContainerClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=azfarstorageaccountblob;AccountKey=+uK9057ZIKHs2DGaGYkFcLdgi3SoWDcdE+JvU9cCgjEbPZVQPxUjWzdwyM7Du+IMI2lE16ibUFHm+AStFOlhNQ==;EndpointSuffix=core.windows.net", container_name)
         # Check if container exists or not. If not, create one
         if container.exists():
             logging.info(f"Container {container_name} has been created")
@@ -45,7 +45,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         local_filepath = tempfile.gettempdir() # Get the directory for temporary files
         filepath = os.path.join(local_filepath, filename)
         container_name = 'staging'
-        blob_service_client = BlobServiceClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=azfarstorageaccountblob;AccountKey=3VrwTc4jGBKCtYg956IOxvhVdmtkUxajvCiIs9H3aC2tjsz9odQVXxMkZVP0qReEiRx2ts8SVvNt+AStGsF4Zg==;EndpointSuffix=core.windows.net")
+        blob_service_client = BlobServiceClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=azfarstorageaccountblob;AccountKey=+uK9057ZIKHs2DGaGYkFcLdgi3SoWDcdE+JvU9cCgjEbPZVQPxUjWzdwyM7Du+IMI2lE16ibUFHm+AStFOlhNQ==;EndpointSuffix=core.windows.net")
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=filename) # Create a blob client to intertact with Blob Service  
 
         # Store json object into a json file
