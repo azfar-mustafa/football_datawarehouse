@@ -5,6 +5,7 @@ import json
 
 import azure.functions as func
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.identity import DefaultAzureCredential
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -45,8 +46,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         local_filepath = tempfile.gettempdir() # Get the directory for temporary files
         filepath = os.path.join(local_filepath, filename)
         container_name = 'staging'
-        blob_service_client = BlobServiceClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=azfarstorageaccountblob;AccountKey=+uK9057ZIKHs2DGaGYkFcLdgi3SoWDcdE+JvU9cCgjEbPZVQPxUjWzdwyM7Du+IMI2lE16ibUFHm+AStFOlhNQ==;EndpointSuffix=core.windows.net")
-        blob_client = blob_service_client.get_blob_client(container=container_name, blob=filename) # Create a blob client to intertact with Blob Service  
+        credential = DefaultAzureCredential()
+        account_url = "https://azfarstorageaccountblob.blob.core.windows.net/"
+
+        #blob_service_client = BlobServiceClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=azfarstorageaccountblob;AccountKey=+uK9057ZIKHs2DGaGYkFcLdgi3SoWDcdE+JvU9cCgjEbPZVQPxUjWzdwyM7Du+IMI2lE16ibUFHm+AStFOlhNQ==;EndpointSuffix=core.windows.net")
+
+        client = BlobServiceClient(account_url=account_url, credential=credential)
+        blob_client = client.get_blob_client(container=container_name, blob=filename)
+        #blob_client = blob_service_client.get_blob_client(container=container_name, blob=filename) # Create a blob client to intertact with Blob Service  
 
         # Store json object into a json file
         with open(filepath, 'w', encoding='utf-8') as f:
@@ -59,7 +66,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
         team = "Manchester City"
         scraped_data = extract_data(team)
-        create_container()
         upload_file(scraped_data, team)     
     except Exception as e:
         logging.info(e)
